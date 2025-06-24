@@ -45,31 +45,26 @@ function App() {
     localStorage.setItem("gender", gender)
   }, [gender]);
 
-  function handleName(event) {
-    setName(event.target.value)
-  }
-
-  function handlingDate(e) {
-    const newDate = e.target.value;
-    console.log(newDate)
-    debugger;
-    if (newDate !== today) {
-      setError('Please select todays date')
-    } else {
-      setError('');
-      setDate(newDate);
-    }
-    setDate(newDate)
-  }
-
-
   function submit(event) {
     event.preventDefault();
-    setSubmitted(true);
-    localStorage.clear()
-  }
-  function print() {
-    window.print()
+    let tempErros = {};
+    if (name.trim() === '') {
+      tempErros.name = 'Please enter name';
+    }
+    if (date !== today) {
+      tempErros.date = 'Please select todays date';
+    }
+    if (email === '' || !email.includes('@')) tempErros.email = 'Please enter valid email id';
+    if (signature === '') tempErros.signature = 'Please enter signature';
+    if (signature === '') tempErros.signature = 'Please enter signature';
+    if (Object.keys(tempErros).length > 0) {
+      setError(tempErros);
+      return
+    } else {
+      setError({});
+      setSubmitted(true);
+      localStorage.clear()
+    }
   }
 
   function organization(e) {
@@ -81,8 +76,8 @@ function App() {
       setShowOrg(false);
     }
     setOrg(value)
-
   }
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="w-full max-w-xl bg-white p-8 rounded-xl shadow-md">
@@ -96,7 +91,7 @@ function App() {
             <button
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
-              onClick={print}
+              onClick={() => window.print()}
             >
               Print
             </button>
@@ -106,29 +101,28 @@ function App() {
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Name</label>
               <input
-                required
                 type="text"
                 value={name}
-                onChange={handleName}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              {error.name && <p className="text-red-500 mt-2">{error.name}</p>}
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Email</label>
               <input
-                required
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your name"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              {error.email && <p className="text-red-500 mt-2">{error.email}</p>}
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Phone number</label>
               <input
-                required
                 type="text"
                 value={number}
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -140,7 +134,6 @@ function App() {
               <label className="block text-sm font-medium mb-1">Gender</label>
               <label className="flex items-center gap-2">
                 <input
-                  required
                   type="radio"
                   value="male"
                   checked={gender === 'male'}
@@ -151,7 +144,6 @@ function App() {
               </label>
               <label className="flex items-center gap-2">
                 <input
-                  required
                   type="radio"
                   value="female"
                   checked={gender === 'female'} onChange={(e) => setGender(e.target.value)}
@@ -163,7 +155,6 @@ function App() {
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Are You Currently Employed?</label>
               <input
-                required
                 type="text"
                 value={org}
                 onChange={organization}
@@ -174,7 +165,6 @@ function App() {
             {showOrg && <div className="mb-4">
               <label className="block text-sm font-medium mb-1">if yes please mention organization name</label>
               <input
-                required
                 type="text"
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
@@ -185,25 +175,24 @@ function App() {
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Signature</label>
               <input
-                required
                 type="text"
                 value={signature}
                 onChange={(e) => setSignature(e.target.value)}
                 placeholder="Enter your signature"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              {error.signature && <p className="text-red-500 mt-2">{error.signature}</p>}
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Date</label>
               <input
-                required
                 type="date"
                 value={date}
-                onChange={handlingDate}
+                onChange={(e) => setDate(e.target.value)}
                 placeholder="Enter your signature"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {error && <p className="text-red-500 mt-2">{error}</p>}
+              {error.date && <p className="text-red-500 mt-2">{error.date}</p>}
             </div>
             <div>
               <button
@@ -218,7 +207,6 @@ function App() {
       </div>
     </div>
   );
-
 }
 
 export default App;
