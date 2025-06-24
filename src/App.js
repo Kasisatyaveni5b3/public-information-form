@@ -62,9 +62,9 @@ function App() {
       return
     } else {
       setError({});
-      setSubmitted(true);
-      localStorage.clear()
     }
+    setSubmitted(true);
+      localStorage.clear()
   }
 
   function organization(e) {
@@ -82,12 +82,14 @@ function App() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="w-full max-w-xl bg-white p-8 rounded-xl shadow-md">
         <h2 className="text-2xl font-semibold mb-6">Public Information Form</h2>
-
         {submitted ? (
           <><p className="text-lg">Name: {name}</p>
             <p className="text-lg">Email: {email}</p>
             <p className="text-lg">Phone number: {number}</p>
             <p className="text-lg">Gender: {gender}</p>
+            <p className="text-lg">organization name: {orgName}</p>
+            <p className="text-lg">Signature: {signature}</p>
+            <p className="text-lg">Date: {date}</p>
             <button
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
