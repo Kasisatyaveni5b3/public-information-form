@@ -24,7 +24,10 @@ function App() {
     return localStorage.getItem("date") || today
   });
   const [submitted, setSubmitted] = useState(false);
-  const [error,setError] = useState(false);
+  const [org, setOrg] = useState('');
+  const [orgName, setOrgName] = useState('');
+  const [error, setError] = useState(false);
+  const [showOrg, setShowOrg] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("name", name)
@@ -47,16 +50,16 @@ function App() {
   }
 
   function handlingDate(e) {
-   const newDate = e.target.value;
-   console.log(newDate)
-   debugger;
-   if(newDate !== today ) {
-    setError('Please select todays date')
-   } else {
-    setError('');
-    setDate(newDate);
-  }
-   setDate(newDate)
+    const newDate = e.target.value;
+    console.log(newDate)
+    debugger;
+    if (newDate !== today) {
+      setError('Please select todays date')
+    } else {
+      setError('');
+      setDate(newDate);
+    }
+    setDate(newDate)
   }
 
 
@@ -67,6 +70,18 @@ function App() {
   }
   function print() {
     window.print()
+  }
+
+  function organization(e) {
+    const value = e.target.value.toLowerCase();
+    debugger;
+    if (value === 'yes') {
+      setShowOrg(true);
+    } else {
+      setShowOrg(false);
+    }
+    setOrg(value)
+
   }
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -144,18 +159,29 @@ function App() {
                 />
                 Female
               </label>
-              <label className="flex items-center gap-2">
-                <input
-                  required
-                  type="radio"
-                  value="None"
-                  checked={gender === 'None'}
-                  onChange={(e) => setGender(e.target.value)}
-                  className="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                None
-              </label>
             </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">Are You Currently Employed?</label>
+              <input
+                required
+                type="text"
+                value={org}
+                onChange={organization}
+                placeholder="Enter your signature"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            {showOrg && <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">if yes please mention organization name</label>
+              <input
+                required
+                type="text"
+                value={orgName}
+                onChange={(e) => setOrgName(e.target.value)}
+                placeholder="Enter your signature"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>}
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Signature</label>
               <input
@@ -168,7 +194,7 @@ function App() {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Signature</label>
+              <label className="block text-sm font-medium mb-1">Date</label>
               <input
                 required
                 type="date"
